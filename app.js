@@ -1,0 +1,1 @@
+// sequelize guide: http://docs.sequelizejs.com/

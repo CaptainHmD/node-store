@@ -4,14 +4,12 @@ let Sequelize = require("sequelize");
 
 if (process.env.ONLINE){
     // connect to remote datbase
-    let sequelize = new Sequelize(process.env.DATABASE_URL);
+    var sequelize = new Sequelize(process.env.DATABASE_URL + "?ssl=true");
 }else{
     // connect to local database
     console.error("local database connection needed");
-    let sequelize = new Sequelize("postgres://xhvmjrhctpibqq:fe752ce7744e3e814138556fc659951565b75fcf69f34f36c23c8417316f45f9@ec2-54-163-230-199.compute-1.amazonaws.com:5432/d6h63qshit6td6")
-
+    var sequelize = new Sequelize("postgres://xhvmjrhctpibqq:fe752ce7744e3e814138556fc659951565b75fcf69f34f36c23c8417316f45f9@ec2-54-163-230-199.compute-1.amazonaws.com:5432/d6h63qshit6td6?ssl=true");
 }
-
 
 // set store item model
 
@@ -30,7 +28,7 @@ Item.init({
         validate: {
             len: [3, 40], 
             customValidator(value){
-                if (name.length > 100){
+                if (this.getDataValue("name").length > 100){
                     throw new Error("names must be under 100 letters");
                 }
             }
@@ -43,6 +41,7 @@ Item.init({
     createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
     updatedAt: { type: Sequelize.DATE, defaultValue: Sequelize.NOW}
 }, { sequelize, modelName: "item"});
+
 
 /* this model showcases */
 // basic Sequelize model structure
